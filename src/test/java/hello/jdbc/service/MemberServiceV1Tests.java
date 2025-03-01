@@ -1,6 +1,5 @@
 package hello.jdbc.service;
 
-import hello.jdbc.connection.ConnectionConst;
 import hello.jdbc.domain.Member;
 import hello.jdbc.repository.MemberRepositoryV1;
 import org.assertj.core.api.Assertions;
@@ -16,7 +15,6 @@ import static hello.jdbc.connection.ConnectionConst.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class MemberServiceV1Tests {
-
 
     public static final String MEMBER_A = "memberA";
     public static final String MEMBER_B = "memberB";
