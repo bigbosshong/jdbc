@@ -1,0 +1,72 @@
+package hello.jdbc.exception;
+
+
+import org.junit.jupiter.api.Test;
+
+import java.sql.SQLException;
+
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+public class UncheckedAppTest {
+
+    @Test
+    void unchecked() {
+        final Controller controller = new Controller();
+        assertThatThrownBy(controller::request)
+                .isInstanceOf(Exception.class);
+    }
+
+
+    static class Controller {
+        Service service = new Service();
+
+        public void request() {
+            service.logic();
+        }
+    }
+
+    static class Service {
+        Repository repository = new Repository();
+        NetworkClient networkClient = new NetworkClient();
+
+        public void logic() {
+            repository.call();
+            networkClient.call();
+        }
+    }
+
+    static class NetworkClient {
+        public void call() {
+            // 예외를 잡아서 런타임 예외로 변환
+            throw new RuntimeConnectException("연결 실패");
+        }
+    }
+
+    static class Repository {
+        public void call() {
+            try {
+                runSQL();
+            } catch (SQLException e) {
+                // 예외를 잡아서 런타임 예외로 변환
+                throw new RuntimeSQLException(e);
+            }
+        }
+
+        private void runSQL() throws SQLException {
+            throw new SQLException("ex");
+        }
+    }
+
+    static class RuntimeConnectException extends RuntimeException {
+        public RuntimeConnectException(String message) {
+            super(message);
+        }
+    }
+
+    static class RuntimeSQLException extends RuntimeException {
+        public RuntimeSQLException(Throwable cause) {
+            super(cause);
+        }
+    }
+
+}
