@@ -9,6 +9,17 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class UncheckedTest {
 
     @Test
+    void printEx() {
+        Service service = new Service();
+        try {
+            service.callThrow();
+        } catch (Exception e) {
+            //e.printStackTrace();
+            log.info("ex", e);
+        }
+    }
+
+    @Test
     void uncheck_catch() {
         Service service = new Service();
         service.callCatch();

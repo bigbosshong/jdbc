@@ -9,6 +9,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class UncheckedAppTest {
 
+
     @Test
     void unchecked() {
         final Controller controller = new Controller();
