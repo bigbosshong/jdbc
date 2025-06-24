@@ -1,4 +1,4 @@
-package hello.jdbc.exception;
+package hello.jdbc.exception.basic;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -6,34 +6,23 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Slf4j
-public class UncheckedTest {
+public class CheckedTest {
 
     @Test
-    void printEx() {
-        Service service = new Service();
-        try {
-            service.callThrow();
-        } catch (Exception e) {
-            //e.printStackTrace();
-            log.info("ex", e);
-        }
-    }
-
-    @Test
-    void uncheck_catch() {
+    void checked_catch() {
         Service service = new Service();
         service.callCatch();
     }
 
     @Test
-    void unchecked_throw() {
+    void checked_throw() {
         Service service = new Service();
         assertThatThrownBy(service::callThrow)
-                .isInstanceOf(MyUnCheckedException.class);
+                .isInstanceOf(MyCheckedException.class);
     }
 
-    static class MyUnCheckedException extends RuntimeException {
-        public MyUnCheckedException(String message) {
+    static class MyCheckedException extends Exception {
+        public MyCheckedException(String message) {
             super(message);
         }
     }
@@ -44,20 +33,19 @@ public class UncheckedTest {
         public void callCatch() {
             try {
                 repository.call();
-            } catch (MyUnCheckedException e) {
+            } catch (MyCheckedException e) {
                 log.info("예외 처리, message={}", e.getMessage(), e);
             }
         }
 
-        public void callThrow() {
+        public void callThrow() throws MyCheckedException {
             repository.call();
         }
     }
 
     static class Repository {
-        public void call() {
-            throw new MyUnCheckedException("ex");
+        public void call() throws MyCheckedException {
+            throw new MyCheckedException("ex");
         }
     }
-
 }

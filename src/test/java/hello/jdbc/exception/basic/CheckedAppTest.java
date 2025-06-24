@@ -1,4 +1,4 @@
-package hello.jdbc.exception;
+package hello.jdbc.exception.basic;
 
 
 import org.junit.jupiter.api.Test;
